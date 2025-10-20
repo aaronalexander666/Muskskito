@@ -1,6 +1,6 @@
-import { eq } from "drizzle-orm";
+import { eq, desc } from "drizzle-orm";
 import { drizzle } from "drizzle-orm/mysql2";
-import { InsertUser, users } from "../drizzle/schema";
+import { InsertUser, users, sessions, threats, vpnLocations, InsertSession, InsertThreat, InsertVpnLocation } from "../drizzle/schema";
 import { ENV } from './_core/env';
 
 let _db: ReturnType<typeof drizzle> | null = null;
@@ -85,4 +85,89 @@ export async function getUser(id: string) {
   return result.length > 0 ? result[0] : undefined;
 }
 
-// TODO: add feature queries here as your schema grows.
+// VPN Location helpers
+export async function getVpnLocations() {
+  const db = await getDb();
+  if (!db) return [];
+  
+  return await db.select().from(vpnLocations);
+}
+
+export async function createVpnLocation(location: InsertVpnLocation) {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+  
+  await db.insert(vpnLocations).values(location);
+}
+
+// Session helpers
+export async function createSession(session: InsertSession) {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+  
+  await db.insert(sessions).values(session);
+  return session;
+}
+
+export async function getUserSessions(userId: string) {
+  const db = await getDb();
+  if (!db) return [];
+  
+  return await db
+    .select()
+    .from(sessions)
+    .where(eq(sessions.userId, userId))
+    .orderBy(desc(sessions.startedAt));
+}
+
+export async function getSession(id: string) {
+  const db = await getDb();
+  if (!db) return undefined;
+  
+  const result = await db.select().from(sessions).where(eq(sessions.id, id)).limit(1);
+  return result.length > 0 ? result[0] : undefined;
+}
+
+export async function updateSession(id: string, updates: Partial<InsertSession>) {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+  
+  await db.update(sessions).set(updates).where(eq(sessions.id, id));
+}
+
+// Threat helpers
+export async function createThreat(threat: InsertThreat) {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+  
+  await db.insert(threats).values(threat);
+}
+
+export async function getSessionThreats(sessionId: string) {
+  const db = await getDb();
+  if (!db) return [];
+  
+  return await db
+    .select()
+    .from(threats)
+    .where(eq(threats.sessionId, sessionId))
+    .orderBy(desc(threats.detectedAt));
+}
+
+export async function getUserThreats(userId: string) {
+  const db = await getDb();
+  if (!db) return [];
+  
+  // Join sessions and threats to get user's threats
+  const userSessions = await getUserSessions(userId);
+  const sessionIds = userSessions.map(s => s.id);
+  
+  if (sessionIds.length === 0) return [];
+  
+  const allThreats = await Promise.all(
+    sessionIds.map(id => getSessionThreats(id))
+  );
+  
+  return allThreats.flat();
+}
+
