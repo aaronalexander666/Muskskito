@@ -221,6 +221,26 @@ export default function Home() {
   };
 
   const scanUrl = async (url: string) => {
+    // Validate URL format
+    if (!url || !url.trim()) {
+      toast.error("Please enter a URL");
+      return;
+    }
+
+    // Add protocol if missing
+    let validUrl = url.trim();
+    if (!validUrl.startsWith('http://') && !validUrl.startsWith('https://')) {
+      validUrl = 'https://' + validUrl;
+    }
+
+    // Validate URL format
+    try {
+      new URL(validUrl);
+    } catch {
+      toast.error("Please enter a valid URL");
+      return;
+    }
+
     setScanProgress(0);
     setThreatDetails(null);
 
@@ -230,28 +250,49 @@ export default function Home() {
     }
 
     try {
-      const result = await scanUrlMutation.mutateAsync({ url });
+      const result = await scanUrlMutation.mutateAsync({ url: validUrl });
       setThreatLevel(result.threatLevel as "safe" | "danger");
       setThreatDetails(result.threatDetails || null);
     } catch (error) {
       console.error("URL scan failed:", error);
       setThreatLevel("safe");
+      toast.error("URL scan failed");
     }
   };
 
   const startSession = async () => {
-    if (!urlInput || !isAuthenticated) {
-      if (!isAuthenticated) {
-        window.location.href = getLoginUrl();
-      }
+    if (!urlInput || !urlInput.trim()) {
+      toast.error("Please enter a URL");
       return;
     }
 
-    await scanUrl(urlInput);
+    if (!isAuthenticated) {
+      window.location.href = getLoginUrl();
+      return;
+    }
+
+    // Add protocol if missing
+    let validUrl = urlInput.trim();
+    if (!validUrl.startsWith('http://') && !validUrl.startsWith('https://')) {
+      validUrl = 'https://' + validUrl;
+    }
+
+    // Validate URL format
+    try {
+      new URL(validUrl);
+    } catch {
+      toast.error("Please enter a valid URL (e.g., example.com or https://example.com)");
+      return;
+    }
+
+    // Update the input with the valid URL
+    setUrlInput(validUrl);
+
+    await scanUrl(validUrl);
 
     try {
       const result = await startSessionMutation.mutateAsync({
-        url: urlInput,
+        url: validUrl,
         vpnIp: vpnConnection?.ip,
         vpnLocation: vpnConnection ? `${vpnConnection.city}, ${vpnConnection.country}` : undefined,
         vpnCountry: vpnConnection?.country,
