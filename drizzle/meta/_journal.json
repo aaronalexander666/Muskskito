@@ -15,6 +15,13 @@
       "when": 1760992976003,
       "tag": "0001_yummy_monster_badoon",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "5",
+      "when": 1760994404386,
+      "tag": "0002_condemned_tombstone",
+      "breakpoints": true
     }
   ]
 }
