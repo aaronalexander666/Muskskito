@@ -7,8 +7,9 @@ import { APP_TITLE, getLoginUrl } from "@/const";
 import { trpc } from "@/lib/trpc";
 import { useEffect, useRef, useState } from "react";
 import { Link } from "wouter";
-import { Settings, Shield, Zap, MessageSquare, Crown, Globe, MapPin, Server } from "lucide-react";
+import { Settings, Shield, Zap, MessageSquare, Crown, Globe, MapPin, Server, Ban } from "lucide-react";
 import { toast } from "sonner";
+import { getAdBlocker } from "@/lib/adBlocker";
 import {
   Select,
   SelectContent,
@@ -267,6 +268,16 @@ export default function Home() {
     latency: string;
     locationId: string;
   } | null>(null);
+  const [blockedCount, setBlockedCount] = useState({ ads: 0, trackers: 0, malware: 0, total: 0 });
+
+  // Initialize ad blocker
+  useEffect(() => {
+    const adBlocker = getAdBlocker();
+    const interval = setInterval(() => {
+      setBlockedCount(adBlocker.getBlockedCount());
+    }, 1000);
+    return () => clearInterval(interval);
+  }, []);
 
   const { data: settings } = trpc.settings.get.useQuery(undefined, { enabled: isAuthenticated });
   const { data: vpnLocations } = trpc.vpn.locations.useQuery(undefined, { enabled: isAuthenticated });
@@ -458,6 +469,38 @@ export default function Home() {
           <h2 className="text-5xl font-bold mb-2 tracking-wider">Muskskito - Disposable AI Browser</h2>
           <p className="text-[#00ff41]/70 text-lg">Browse Safe, Leave No Trace</p>
         </div>
+
+        {/* Ad Blocker Stats */}
+        {blockedCount.total > 0 && (
+          <Card className="bg-black/80 border-[#00ff41]/30 backdrop-blur-sm mb-6">
+            <CardHeader>
+              <CardTitle className="text-[#00ff41] flex items-center gap-2">
+                <Ban className="h-5 w-5" />
+                Ad Blocker Active
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="grid grid-cols-4 gap-4 font-mono text-sm">
+                <div className="text-center p-3 border border-[#00ff41]/30 rounded bg-black/50">
+                  <div className="text-2xl font-bold text-[#00ff41]">{blockedCount.total}</div>
+                  <div className="text-[#00ff41]/60">Total Blocked</div>
+                </div>
+                <div className="text-center p-3 border border-[#00ff41]/30 rounded bg-black/50">
+                  <div className="text-2xl font-bold text-[#00ff41]">{blockedCount.ads}</div>
+                  <div className="text-[#00ff41]/60">Ads</div>
+                </div>
+                <div className="text-center p-3 border border-[#00ff41]/30 rounded bg-black/50">
+                  <div className="text-2xl font-bold text-[#00ff41]">{blockedCount.trackers}</div>
+                  <div className="text-[#00ff41]/60">Trackers</div>
+                </div>
+                <div className="text-center p-3 border border-red-500/30 rounded bg-black/50">
+                  <div className="text-2xl font-bold text-red-500">{blockedCount.malware}</div>
+                  <div className="text-red-500/60">Malware</div>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+        )}
 
         {/* VPN Status and Selection */}
         <div className="grid md:grid-cols-2 gap-6 mb-6">
