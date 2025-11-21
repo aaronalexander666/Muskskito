@@ -1,286 +1,102 @@
-# Muskskito - Disposable AI Browser
+# ⚔️ Muskskito: The Sovereign Gateway – Built by the Free, for the Free.
 
-🔒 **Browse Safe, Leave No Trace**
+**Muskskito is an open-source, disposable AI browser built to end digital feudalism.**
 
-A cyberpunk-themed disposable browser with AI-powered threat detection, VPN protection, and complete session privacy.
+Every line of code is a commitment to self-custody. We are not a corporation, and this is not a product—it is the **Sovereign Gateway**, and it is being constructed by the global collective. If you believe your data belongs to you, join us.
 
-![Muskskito Banner](https://img.shields.io/badge/Security-First-00ff41?style=for-the-badge) ![License](https://img.shields.io/badge/License-MIT-00ff41?style=for-the-badge)
-
-## 🚀 Features
-
-### Core Security
-- **Disposable Sessions**: Automatically delete browsing history after set time
-- **AI Threat Detection**: Real-time malware and phishing detection
-- **VPN Protection**: 24 global VPN locations (8 free, 16 pro)
-- **Sandboxed Browsing**: Isolated environment for maximum security
-- **Tracker Blocking**: Block ads, trackers, and malicious scripts
-
-### AI Assistant
-- **Real-time Chat**: AI security advisor helps you browse safely
-- **Contextual Advice**: Get security tips based on current website
-- **Threat Explanations**: Understand detected threats in plain language
-
-### Privacy Controls
-- **Auto-Delete**: Configure automatic session deletion (5-1440 minutes)
-- **Advanced Settings**: Customize threat sensitivity and blocking rules
-- **Session History**: Track and manage all browsing sessions
-- **Complete Deletion**: NUKE button for instant session termination
-
-### Pro Features
-- 🌍 **24 Global VPN Locations** (vs 8 free)
-- ⚡ **Priority VPN Servers** for faster connections
-- 🛡️ **Enhanced Threat Detection** with higher accuracy
-- 🚫 **Advanced Ad & Tracker Blocking**
-- ♾️ **Unlimited Browsing Sessions**
-- 👑 **Priority Support**
-
-## 🎨 Tech Stack
-
-- **Frontend**: React 19 + TypeScript + Vite
-- **Backend**: Express + tRPC 11
-- **Database**: MySQL/TiDB with Drizzle ORM
-- **Styling**: TailwindCSS 4 + shadcn/ui
-- **AI**: OpenAI GPT-4 integration
-- **Auth**: Manus OAuth
-- **3D Graphics**: Canvas API for globe visualization
-
-## 📦 Installation
-
-### Prerequisites
-- Node.js 22+
-- pnpm 10+
-- MySQL/TiDB database
-
-### Setup
-
-1. **Clone the repository**
-   ```bash
-   git clone https://github.com/aaronalexander666/muskskito.git
-   cd muskskito
-   ```
-
-2. **Install dependencies**
-   ```bash
-   pnpm install
-   ```
-
-3. **Configure environment variables**
-   
-   Create a `.env` file with:
-   ```env
-   DATABASE_URL=mysql://user:password@host:port/database
-   JWT_SECRET=your-secret-key
-   VITE_APP_ID=your-manus-app-id
-   OAUTH_SERVER_URL=https://api.manus.im
-   VITE_OAUTH_PORTAL_URL=https://portal.manus.im
-   BUILT_IN_FORGE_API_URL=https://api.manus.im
-   BUILT_IN_FORGE_API_KEY=your-api-key
-   VITE_APP_TITLE=Muskskito - Disposable AI Browser
-   VITE_APP_LOGO=/logo.png
-   ```
-
-4. **Initialize database**
-   ```bash
-   pnpm db:push
-   ```
-
-5. **Start development server**
-   ```bash
-   pnpm dev
-   ```
-
-6. **Access the application**
-   
-   Open [http://localhost:3000](http://localhost:3000)
-
-## 🗺️ VPN Locations
-
-### Free Tier (8 locations)
-- 🇺🇸 United States (New York, Los Angeles)
-- 🇬🇧 United Kingdom (London)
-- 🇩🇪 Germany (Frankfurt)
-- 🇳🇱 Netherlands (Amsterdam)
-- 🇸🇬 Singapore
-- 🇯🇵 Japan (Tokyo)
-- 🇨🇦 Canada (Toronto)
-
-### Pro Tier (16 additional locations)
-- 🇸🇪 Sweden (Stockholm)
-- 🇨🇭 Switzerland (Zurich)
-- 🇮🇸 Iceland (Reykjavik)
-- 🇳🇴 Norway (Oslo)
-- 🇫🇮 Finland (Helsinki)
-- 🇫🇷 France (Paris)
-- 🇪🇸 Spain (Madrid)
-- 🇮🇹 Italy (Milan)
-- 🇦🇺 Australia (Sydney)
-- 🇧🇷 Brazil (São Paulo)
-- 🇰🇷 South Korea (Seoul)
-- 🇭🇰 Hong Kong
-- 🇮🇳 India (Mumbai)
-- 🇦🇪 UAE (Dubai)
-- 🇿🇦 South Africa (Johannesburg)
-- 🇲🇽 Mexico (Mexico City)
-
-## 🎯 Usage
-
-### Basic Browsing
-1. **Login** to your account
-2. **Activate VPN** for anonymous browsing
-3. **Enter URL** in the secure browse command
-4. **Launch Sandbox** to start protected session
-5. **NUKE SESSION** when done to delete all traces
-
-### Settings Configuration
-- Navigate to **Settings** page
-- Configure auto-delete timer
-- Enable/disable tracker and ad blocking
-- Adjust threat sensitivity
-- Enable AI assistant
-
-### AI Chat Assistant
-- Click the chat bubble (bottom-right) during active session
-- Ask security questions
-- Get real-time threat analysis
-- Receive browsing safety tips
-
-### Upgrade to Pro
-- Visit **Upgrade to Pro** page
-- Choose subscription plan (1, 3, or 12 months)
-- Complete payment
-- Enjoy premium features immediately
-
-## 🔧 Development
-
-### Project Structure
-```
-muskskito/
-├── client/                 # Frontend React app
-│   ├── src/
-│   │   ├── pages/         # Page components
-│   │   ├── components/    # Reusable UI components
-│   │   ├── lib/           # tRPC client
-│   │   └── index.css      # Global styles
-├── server/                # Backend Express app
-│   ├── routers.ts         # tRPC API routes
-│   ├── db.ts              # Database helpers
-│   └── _core/             # Core server utilities
-├── drizzle/               # Database schema
-│   └── schema.ts          # Table definitions
-└── shared/                # Shared types & constants
-```
-
-### Available Scripts
-- `pnpm dev` - Start development server
-- `pnpm build` - Build for production
-- `pnpm preview` - Preview production build
-- `pnpm db:push` - Push database schema changes
-- `pnpm lint` - Run ESLint
-
-### Database Schema
-- **users** - User accounts and subscriptions
-- **user_settings** - Privacy and security preferences
-- **vpn_locations** - VPN server locations
-- **sessions** - Browsing sessions with threat data
-- **threats** - Detected security threats
-- **chat_messages** - AI assistant conversations
-- **payments** - Subscription payments
-
-## 🚢 Deployment
-
-### Production Build
-```bash
-pnpm build
-```
-
-### Environment Setup
-Ensure all environment variables are configured in your hosting platform.
-
-### Database Migration
-```bash
-pnpm db:push
-```
-
-### Recommended Hosting
-- **Frontend**: Vercel, Netlify, Cloudflare Pages
-- **Backend**: Railway, Render, Fly.io
-- **Database**: PlanetScale, TiDB Cloud, AWS RDS
-
-## 🔐 Security Features
-
-### Session Isolation
-- Each browsing session runs in isolated sandbox
-- No cookies or storage persistence
-- Automatic cleanup on termination
-
-### Threat Detection
-- Real-time URL scanning
-- Malware pattern recognition
-- Phishing detection
-- Confidence scoring
-
-### Privacy Protection
-- VPN IP masking
-- Tracker blocking
-- Ad removal
-- No browsing history retention
-
-## 💳 Pricing
-
-### Free Plan
-- **$0/month**
-- 8 VPN locations
-- Basic threat detection
-- Auto-delete sessions
-- AI assistant
-
-### Pro Plan
-- **$9.99/month** (save 10% with 3-month plan)
-- **$6.99/month** (save 30% with 12-month plan)
-- 24 global VPN locations
-- Advanced threat detection
-- Priority servers
-- Enhanced protection
-- Unlimited sessions
-- Priority support
-
-## 📄 License
-
-MIT License - see [LICENSE](LICENSE) file for details
-
-## 🤝 Contributing
-
-Contributions are welcome! Please feel free to submit a Pull Request.
-
-1. Fork the repository
-2. Create your feature branch (`git checkout -b feature/AmazingFeature`)
-3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
-4. Push to the branch (`git push origin feature/AmazingFeature`)
-5. Open a Pull Request
-
-## 🐛 Bug Reports
-
-Found a bug? Please open an issue with:
-- Description of the bug
-- Steps to reproduce
-- Expected behavior
-- Screenshots (if applicable)
-
-## 📞 Support
-
-- **Documentation**: [GitHub Wiki](https://github.com/aaronalexander666/muskskito/wiki)
-- **Issues**: [GitHub Issues](https://github.com/aaronalexander666/muskskito/issues)
-- **Email**: aaronalexanderq4@gmail.com 
-
-## 🙏 Acknowledgments
-
-- Built with [Manus](https://manus.im) platform
-- UI components from [shadcn/ui](https://ui.shadcn.com)
-- Icons from [Lucide](https://lucide.dev)
+![Muskskito Banner](https://img.shields.io/badge/Status-Community%20Beta-9933FF?style=for-the-badge) ![License](https://img.shields.io/badge/License-MIT-00ff41?style=for-the-badge)
 
 ---
 
-**Made with 💚 by the Muskskito Team**
+## 🏛️ The Mission: Ending Digital Feudalism
 
-Browse Safe, Leave No Trace 🔒
+The current internet is a surveillance platform. Muskskito is the counter-protocol. Our design philosophy is simple: **Browse Safe, Leave No Trace.**
 
+We eliminate persistence, integrate on-device AI for defense, and ensure that every session is an ephemeral fortress that burns itself down upon exit. We are building the internet's **Djed Pillar**—stable, immutable, and unbreakable.
+
+---
+
+## 🛡️ Sovereign Features: Your Co-Created Arsenal
+
+These are the core systems we are building together:
+
+### **1. Sandboxed Citadel (The Djed Pillar)**
+* **Disposable Sessions**: All history, cookies, and local storage vaporize automatically.
+* **The NUKE Button**: Instant, total deletion of your active session.
+* **Sandboxed Browsing**: Isolated environment for maximum security.
+
+### **2. Real-Time AI Sentinels (The Scarab Engine)**
+* **AI Threat Detection**: Real-time malware and phishing recognition, powered by on-device models.
+* **Contextual Advice**: An integrated AI assistant to guide you through security threats.
+
+### **3. Ma'at-Aligned Protection (The Feather of Truth)**
+* **Tracker Blocking**: Block all ads, trackers, and surveillance scripts.
+* **VPN Integration**: Anonymity layer built into the core.
+
+---
+
+## 🤝 Contribution: The 14 Sovereign Pathways
+
+Muskskito is a direct manifestation of the Sovereign Pathways. We invite contributors across all 14 disciplines to join the co-creation effort.
+
+| Pathway Skill Set | Project Focus Area | Contribution Example |
+| :--- | :--- | :--- |
+| **Djed Pillar (Software)** | Immutable Code | Help refine the sandboxing core and Rust security modules. |
+| **Scarab (ML Engineers)** | AI Sentinel Models | Work on optimizing and quantizing the threat-detection models for on-device speed. |
+| **Reed Pen (Language)** | Agent Prompts | Craft the precise prompts that govern the AI security assistant's advice. |
+| **Cartouche (Explainers)** | Narrative Clarity | Audit our UI text to ensure the project's mission is instantly clear and irresistible. |
+
+**No matter your skill level, there is a path for you to raise this pillar.**
+
+---
+
+## 🛠️ Beginner Co-Creation Project: Cartouche-UI Clarity Audit
+
+Our most immediate need is **narrative sovereignty**. We need to translate complex code into plain, powerful truth. This is the perfect entry point for new contributors (Pillars 5 & 8).
+
+### **Goal:** Define the **"Ren"** (True Name) of our features.
+Help us write perfect, powerful, one-sentence descriptions for every core security feature.
+
+1.  **Join:** Fork the repository.
+2.  **Locate:** Find the `shared/config/messages.yaml` file (or create it!).
+3.  **Translate:** Take the current technical description and rewrite it to be clear, emotionally impactful, and strictly aligned with the mission.
+
+| Key | Current Technical Description | Your Proposed Cartouche Description |
+| :--- | :--- | :--- |
+| `feature.disposable_sessions` | *Automatically delete browsing history after set time* | **[Contribute your clear, powerful version here]** |
+| `feature.ai_threat_detection` | *Real-time malware and phishing detection* | **[Contribute your clear, powerful version here]** |
+| `feature.nuke_button` | *NUKE button for instant session termination* | **[Contribute your clear, powerful version here]** |
+
+### **How to Contribute (Getting Started):**
+
+1.  **Clone the repository**
+    ```bash
+    git clone [https://github.com/aaronalexander666/muskskito.git](https://github.com/aaronalexander666/muskskito.git)
+    cd muskskito
+    ```
+2.  **Open an Issue:** Describe the feature you want to work on (e.g., "Working on Cartouche descriptions for VPN").
+3.  **Submit a Pull Request (PR):** Target your changes to the `main` branch.
+
+---
+
+## 🎨 Tech Stack & Infrastructure
+
+Muskskito is built on a foundation of speed, security, and immutability:
+
+* **Frontend**: React 19 + TypeScript + Vite
+* **Backend**: Express + tRPC 11
+* **Data**: MySQL/TiDB (Scalability)
+* **Styling**: TailwindCSS 4
+* **AI**: OpenAI GPT-4 integration (with plans for self-hosted SLMs)
+
+We use the most modern, maintainable stack to ensure the long-term sovereignty of the project.
+
+---
+
+## 📞 Support & Community aaronalexanderq4@gmail.com 
+
+* **Documentation**: [GitHub Wiki (Needs Builders!)](https://github.com/aaronalexander666/muskskito/wiki)
+* **Issues**: [GitHub Issues](https://github.com/aaronalexander666/muskskito/issues)
+* **Join the Conversation**: [Link to Discord/Matrix/Community Channel]
+
+**Let us build the Sovereign Gateway together.**
