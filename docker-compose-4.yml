@@ -1,0 +1,288 @@
+version: '3.8'
+
+services:
+  # Main Browser Frontend
+  sovereign-browser:
+    build:
+      context: ../
+      dockerfile: deployment/browser.Dockerfile
+    ports:
+      - "8080:8080"
+    environment:
+      - NODE_ENV=production
+      - WIREGUARD_CONFIG_PATH=/etc/wireguard
+      - AI_MODEL_PATH=/models
+      - CONTAINER_SANDBOX_PATH=/var/lib/gvisor
+    volumes:
+      - wireguard_config:/etc/wireguard:ro
+      - ai_models:/models:ro
+      - container_state:/var/lib/gvisor
+    depends_on:
+      - wireguard-server
+      - ai-security-service
+      - dragon-shield-service
+    restart: unless-stopped
+    security_opt:
+      - apparmor:browser-profile
+      - seccomp:browser-seccomp.json
+    cap_add:
+      - NET_ADMIN
+      - SYS_ADMIN
+    devices:
+      - /dev/net/tun:/dev/net/tun
+    networks:
+      - sovereign-network
+
+  # WireGuard VPN Server
+  wireguard-server:
+    build:
+      context: ../
+      dockerfile: deployment/wireguard.Dockerfile
+    ports:
+      - "51820:51820/udp"
+    environment:
+      - WG_INTERFACE_NAME=wg0
+      - WG_LISTEN_PORT=51820
+    volumes:
+      - wireguard_config:/etc/wireguard
+      - wireguard_keys:/etc/keys
+    restart: unless-stopped
+    security_opt:
+      - no-new-privileges:true
+    networks:
+      - sovereign-network
+
+  # AI Security Service (Malware Detection)
+  ai-security-service:
+    build:
+      context: ../
+      dockerfile: deployment/ai-security.Dockerfile
+    ports:
+      - "8081:8081"
+    environment:
+      - MODEL_PATH=/models/phi-3-quantized.gguf
+      - SECURITY_LEVEL=high
+      - DETECTION_THRESHOLD=0.85
+    volumes:
+      - ai_models:/models:ro
+      - security_logs:/var/log/security
+    restart: unless-stopped
+    security_opt:
+      - apparmor:ai-profile
+    networks:
+      - sovereign-network
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: 1
+              capabilities: [gpu]
+
+  # gVisor Container Runtime Service
+  gvisor-sandbox:
+    build:
+      context: ../
+      dockerfile: deployment/gvisor.Dockerfile
+    ports:
+      - "8082:8082"
+    environment:
+      - GVISOR_SANDBOX_PATH=/run/gvisor
+      - MAX_CONTAINERS=10
+      - MEMORY_LIMIT=2GB
+    volumes:
+      - gvisor_state:/run/gvisor
+      - container_runtime:/var/lib/containers
+    restart: unless-stopped
+    security_opt:
+      - apparmor:gvisor-profile
+      - seccomp:gvisor-seccomp.json
+    cap_add:
+      - SYS_ADMIN
+      - SYS_PTRACE
+    networks:
+      - sovereign-network
+
+  # WebContainer Runtime Service
+  webcontainer-service:
+    build:
+      context: ../
+      dockerfile: deployment/webcontainer.Dockerfile
+    ports:
+      - "8083:8083"
+    environment:
+      - WEBCONTAINER_MAX_MEMORY=512MB
+      - WEBCONTAINER_MAX_CPUS=2
+      - EPHEMERAL_STORAGE_TTL=300s
+    volumes:
+      - webcontainer_state:/var/lib/webcontainers
+      - ephemeral_storage:/tmp/ephemeral
+    restart: unless-stopped
+    security_opt:
+      - apparmor:webcontainer-profile
+    networks:
+      - sovereign-network
+
+  # Anti-Fingerprinting Service
+  fingerprint-protection:
+    build:
+      context: ../
+      dockerfile: deployment/fingerprint.Dockerfile
+    ports:
+      - "8084:8084"
+    environment:
+      - CANVAS_SP00F=true
+      - WEBGL_CANVAS_DATA=random
+      - AUDIO_CONTEXT_RANDOM=true
+      - FONT_LIST_DYNAMIC=true
+    volumes:
+      - fingerprint_cache:/var/cache/fingerprint
+    restart: unless-stopped
+    networks:
+      - sovereign-network
+
+  # Storage Clean-up Service
+  storage-cleanup:
+    build:
+      context: ../
+      dockerfile: deployment/cleanup.Dockerfile
+    environment:
+      - CLEANUP_INTERVAL=300s
+      - RETENTION_DAYS=0
+      - SECURE_DELETE=true
+    volumes:
+      - ephemeral_storage:/var/lib/ephemeral:ro
+      - security_logs:/var/log/security:ro
+    restart: unless-stopped
+    networks:
+      - sovereign-network
+    deploy:
+      restart_policy:
+        condition: any
+
+  # 2025 Backend Security Engine (Post-Quantum + Zero-Knowledge + Enclave)
+  sovereign-backend-2025:
+    build:
+      context: ../
+      dockerfile: deployment/backend/Dockerfile.backend
+    ports:
+      - "8443:8443"
+    environment:
+      - PQC_KEM_SCHEME=kyber768
+      - ZK_KMS_ENABLED=true
+      - ENCLAVE_BACKED=true
+      - SECURITY_LEVEL=NIST_Level_5
+    volumes:
+      - sovereign_backend_state:/var/lib/sovereign
+      - sovereign_backend_logs:/var/log/sovereign
+      - enclave_keys:/etc/sovereign
+    restart: unless-stopped
+    security_opt:
+      - apparmor:sovereign-backend
+      - seccomp:backend-seccomp.json
+    cap_add:
+      - NET_ADMIN
+      - SYS_ADMIN
+    networks:
+      - sovereign-network
+    deploy:
+      resources:
+        reservations:
+          memory: "512Mi"
+          cpus: "500m"
+        limits:
+          memory: "1Gi"
+          cpus: "1000m"
+
+  # Dragon Shield - Comprehensive Threat Defense Service
+  dragon-shield-service:
+    build:
+      context: ./dragon-shield-service
+      dockerfile: Dockerfile
+    ports:
+      - "8085:8085"
+    environment:
+      - LAYER_1_ANTIFINGERPRINTING=true
+      - LAYER_2_QUERY_SANCTIFICATION=true
+      - LAYER_3_HISTORY_SANCTIFICATION=true
+      - LAYER_4_CACHE_SANCTIFICATION=true
+      - LAYER_5_SCRIPT_SANCTIFICATION=true
+      - LAYER_6_NETWORK_SANCTIFICATION=true
+      - LAYER_7_HARDWARE_SANCTIFICATION=true
+      - ZERO_DAY_RESPONSE_TIME=24h
+      - CONTRACT_HASH_PATH=/contracts/contract-hash.txt
+    volumes:
+      - dragon_shield_threat_intel:/threat-feeds:ro
+      - dragon_shield_contracts:/contracts:ro
+      - dragon_shield_state:/var/lib/dragon-shield
+      - dragon_shield_logs:/var/log/dragon-shield
+      - dragon_shield_security:/etc/dragon-shield
+    depends_on:
+      - sovereign-backend-2025
+      - ai-security-service
+    restart: unless-stopped
+    security_opt:
+      - apparmor:dragon-shield-profile
+    networks:
+      - sovereign-network
+    deploy:
+      resources:
+        reservations:
+          memory: "256Mi"
+          cpus: "250m"
+        limits:
+          memory: "512Mi"
+          cpus: "500m"
+
+volumes:
+  wireguard_config:
+    driver: local
+  wireguard_keys:
+    driver: local
+    driver_opts:
+      type: tmpfs
+  ai_models:
+    driver: local
+  gvisor_state:
+    driver: local
+  container_runtime:
+    driver: local
+  webcontainer_state:
+    driver: local
+  ephemeral_storage:
+    driver: local
+    driver_opts:
+      type: tmpfs
+  fingerprint_cache:
+    driver: local
+  security_logs:
+    driver: local
+  container_state:
+    driver: local
+  sovereign_backend_state:
+    driver: local
+  sovereign_backend_logs:
+    driver: local
+  enclave_keys:
+    driver: local
+    driver_opts:
+      type: tmpfs
+  dragon_shield_threat_intel:
+    driver: local
+  dragon_shield_contracts:
+    driver: local
+    driver_opts:
+      type: tmpfs
+  dragon_shield_state:
+    driver: local
+  dragon_shield_logs:
+    driver: local
+  dragon_shield_security:
+    driver: local
+
+networks:
+  sovereign-network:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.20.0.0/16

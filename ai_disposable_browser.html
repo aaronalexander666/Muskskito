@@ -1,0 +1,800 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Disposable Browser - Sovereign Security Suite</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 50%, #16213e 100%);
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+        
+        .glass-effect {
+            backdrop-filter: blur(20px);
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .security-indicator {
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+        
+        .threat-scan {
+            animation: scan 3s linear infinite;
+        }
+        
+        @keyframes scan {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(100%); }
+        }
+        
+        .vpn-glow {
+            box-shadow: 0 0 20px rgba(34, 197, 94, 0.5);
+        }
+        
+        .danger-glow {
+            box-shadow: 0 0 20px rgba(239, 68, 68, 0.5);
+        }
+        
+        .pillar-card {
+            background: linear-gradient(135deg, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0.05) 100%);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .world-map {
+            background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 500"><path fill="%23374151" d="M150,100 L200,80 L280,120 L320,100 L380,140 L420,120 L480,160 L520,140 L580,180 L620,160 L680,200 L720,180 L780,220 L820,200 L880,240 L920,220 L980,260 L980,400 L20,400 L20,140 Z"/></svg>');
+            background-size: cover;
+            background-position: center;
+        }
+        
+        .threat-level-low { color: #22c55e; }
+        .threat-level-medium { color: #f59e0b; }
+        .threat-level-high { color: #ef4444; }
+        
+        .animate-bounce-slow {
+            animation: bounce 3s infinite;
+        }
+    </style>
+</head>
+<body class="bg-gray-900 text-white">
+    <!-- Main Container -->
+    <div class="min-h-screen">
+        <!-- Header -->
+        <div class="glass-effect p-6 mb-6">
+            <div class="flex items-center justify-between">
+                <div class="flex items-center space-x-6">
+                    <div class="flex items-center space-x-4">
+                        <div class="w-12 h-12 bg-gradient-to-r from-blue-500 to-purple-600 rounded-xl flex items-center justify-center">
+                            <i class="fas fa-shield-alt text-white text-xl"></i>
+                        </div>
+                        <div>
+                            <h1 class="text-2xl font-bold text-white">AI Disposable Browser</h1>
+                            <p class="text-gray-300">Sovereign Security Architecture</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="flex items-center space-x-4">
+                    <div class="flex items-center space-x-4">
+                        <div class="flex items-center space-x-2">
+                            <div class="w-3 h-3 bg-green-400 rounded-full security-indicator"></div>
+                            <span class="text-sm text-green-400 font-medium">AI PROTECTED</span>
+                        </div>
+                        <div class="flex items-center space-x-2">
+                            <div class="w-3 h-3 bg-blue-400 rounded-full security-indicator"></div>
+                            <span class="text-sm text-blue-400 font-medium">VPN ACTIVE</span>
+                        </div>
+                        <div class="flex items-center space-x-2">
+                            <div class="w-3 h-3 bg-purple-400 rounded-full security-indicator"></div>
+                            <span class="text-sm text-purple-400 font-medium">ISOLATED</span>
+                        </div>
+                    </div>
+                    <button class="bg-red-500 hover:bg-red-600 px-6 py-3 rounded-lg text-sm font-medium transition-colors">
+                        <i class="fas fa-trash-alt mr-2"></i>NUKE SESSION
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Main Browser Interface -->
+        <div class="grid grid-cols-1 lg:grid-cols-4 gap-6 mb-6">
+            <!-- Browser Window -->
+            <div class="lg:col-span-3 glass-effect rounded-2xl p-6">
+                <div class="flex items-center justify-between mb-4">
+                    <h2 class="text-xl font-semibold">Isolated Container Session</h2>
+                    <div class="flex items-center space-x-2">
+                        <span class="text-xs bg-green-500 px-3 py-1 rounded-full">WEB CONTAINER</span>
+                        <span class="text-xs bg-blue-500 px-3 py-1 rounded-full">ZERO PERSISTENCE</span>
+                        <span class="text-xs bg-purple-500 px-3 py-1 rounded-full">GVISOR PROTECTED</span>
+                    </div>
+                </div>
+                
+                <!-- Address Bar -->
+                <div class="flex items-center space-x-3 mb-6">
+                    <div class="flex-1 bg-gray-800 rounded-xl p-4 flex items-center space-x-3">
+                        <i class="fas fa-lock text-green-400"></i>
+                        <input type="text" class="bg-transparent flex-1 text-white placeholder-gray-400 outline-none" placeholder="Enter secure URL..." value="https://secure.sovereign.net">
+                        <div class="flex items-center space-x-3">
+                            <i class="fas fa-shield-alt text-green-400" title="AI Malware Protection Active"></i>
+                            <i class="fas fa-eye-slash text-blue-400" title="Anti-Fingerprinting Active"></i>
+                            <i class="fas fa-globe text-purple-400" title="VPN Active"></i>
+                            <i class="fas fa-cube text-cyan-400" title="Containerized"></i>
+                        </div>
+                    </div>
+                    <button class="bg-blue-600 hover:bg-blue-700 px-6 py-4 rounded-xl transition-colors">
+                        <i class="fas fa-arrow-right"></i>
+                    </button>
+                </div>
+                
+                <!-- Browser Content Area -->
+                <div class="bg-gray-800 rounded-xl h-96 p-6 relative overflow-hidden">
+                    <div class="absolute inset-0 bg-gradient-to-br from-gray-700 to-gray-800 rounded-xl"></div>
+                    <div class="relative z-10 h-full flex items-center justify-center">
+                        <div class="text-center">
+                            <i class="fas fa-globe text-8xl text-gray-500 mb-6"></i>
+                            <h3 class="text-2xl font-semibold mb-3">Secure Browsing Environment</h3>
+                            <p class="text-gray-400 mb-6">All web content is isolated in a secure WebContainer</p>
+                            <div class="flex items-center justify-center space-x-6 text-sm">
+                                <div class="flex items-center space-x-2">
+                                    <div class="w-3 h-3 bg-green-400 rounded-full animate-pulse"></div>
+                                    <span>WebContainer Isolation</span>
+                                </div>
+                                <div class="flex items-center space-x-2">
+                                    <div class="w-3 h-3 bg-blue-400 rounded-full animate-pulse"></div>
+                                    <span>Zero Persistence</span>
+                                </div>
+                                <div class="flex items-center space-x-2">
+                                    <div class="w-3 h-3 bg-purple-400 rounded-full animate-pulse"></div>
+                                    <span>gVisor Sandboxed</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Scanning Overlay -->
+                    <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-green-400 to-transparent opacity-30 threat-scan"></div>
+                </div>
+            </div>
+            
+            <!-- VPN Status Panel -->
+            <div class="glass-effect rounded-2xl p-6">
+                <div class="flex items-center justify-between mb-4">
+                    <h3 class="text-lg font-semibold">VPN Status</h3>
+                    <div class="w-3 h-3 bg-green-400 rounded-full vpn-glow"></div>
+                </div>
+                
+                <!-- World Map Visualization -->
+                <div class="world-map h-32 rounded-lg mb-4 relative overflow-hidden">
+                    <div class="absolute inset-0 bg-black bg-opacity-40 rounded-lg"></div>
+                    <div class="absolute top-4 right-4 flex items-center space-x-2">
+                        <div class="w-3 h-3 bg-green-400 rounded-full animate-ping"></div>
+                        <span class="text-xs font-medium">TOKYO</span>
+                    </div>
+                    <div class="absolute top-4 left-4 flex items-center space-x-2">
+                        <div class="w-2 h-2 bg-blue-400 rounded-full animate-bounce"></div>
+                        <span class="text-xs font-medium">SEATTLE</span>
+                    </div>
+                    <div class="absolute bottom-4 left-4">
+                        <span class="text-xs text-gray-300">Global WireGuard Network</span>
+                    </div>
+                </div>
+                
+                <!-- Connection Details -->
+                <div class="space-y-3 mb-4">
+                    <div class="flex items-center justify-between">
+                        <span class="text-sm text-gray-300">Current Location</span>
+                        <span class="text-sm font-medium">Tokyo, Japan</span>
+                    </div>
+                    <div class="flex items-center justify-between">
+                        <span class="text-sm text-gray-300">Protocol</span>
+                        <span class="text-sm font-medium">WireGuard</span>
+                    </div>
+                    <div class="flex items-center justify-between">
+                        <span class="text-sm text-gray-300">Encryption</span>
+                        <span class="text-sm font-medium">ChaCha20</span>
+                    </div>
+                    <div class="flex items-center justify-between">
+                        <span class="text-sm text-gray-300">DNS Protection</span>
+                        <span class="text-sm font-medium text-green-400">DoH Active</span>
+                    </div>
+                    <div class="flex items-center justify-between">
+                        <span class="text-sm text-gray-300">IPv6</span>
+                        <span class="text-sm font-medium text-green-400">Blocked</span>
+                    </div>
+                </div>
+                
+                <button class="w-full mt-4 bg-green-600 hover:bg-green-700 py-3 rounded-lg text-sm font-medium transition-colors">
+                    <i class="fas fa-exchange-alt mr-2"></i>Change Location
+                </button>
+            </div>
+        </div>
+
+        <!-- Security Dashboard -->
+        <div class="grid grid-cols-1 lg:grid-cols-5 gap-6 mb-6">
+            <!-- AI Threat Detection -->
+            <div class="glass-effect rounded-2xl p-6">
+                <div class="flex items-center justify-between mb-4">
+                    <h3 class="text-lg font-semibold">AI Threat Detection</h3>
+                    <i class="fas fa-brain text-purple-400"></i>
+                </div>
+                <div class="text-center">
+                    <div class="text-3xl font-bold text-green-400 mb-2">0</div>
+                    <div class="text-sm text-gray-300 mb-3">Threats Blocked</div>
+                    <div class="w-full bg-gray-700 rounded-full h-2 mb-3">
+                        <div class="bg-green-400 h-2 rounded-full" style="width: 100%"></div>
+                    </div>
+                    <div class="text-xs text-gray-400">Real-time Scanning Active</div>
+                    <div class="mt-2 text-xs text-gray-500">Model: Phi-3 3.8B Quantized</div>
+                </div>
+            </div>
+            
+            <!-- Fingerprint Protection -->
+            <div class="glass-effect rounded-2xl p-6">
+                <div class="flex items-center justify-between mb-4">
+                    <h3 class="text-lg font-semibold">Fingerprint Shield</h3>
+                    <i class="fas fa-fingerprint text-blue-400"></i>
+                </div>
+                <div class="space-y-2">
+                    <div class="flex items-center justify-between text-sm">
+                        <span class="text-gray-300">Canvas</span>
+                        <span class="text-green-400">Spoofed</span>
+                    </div>
+                    <div class="flex items-center justify-between text-sm">
+                        <span class="text-gray-300">WebGL</span>
+                        <span class="text-green-400">Randomized</span>
+                    </div>
+                    <div class="flex items-center justify-between text-sm">
+                        <span class="text-gray-300">Audio</span>
+                        <span class="text-green-400">Noised</span>
+                    </div>
+                    <div class="flex items-center justify-between text-sm">
+                        <span class="text-gray-300">Fonts</span>
+                        <span class="text-green-400">Masked</span>
+                    </div>
+                    <div class="flex items-center justify-between text-sm">
+                        <span class="text-gray-300">WebRTC</span>
+                        <span class="text-green-400">Disabled</span>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Session Isolation -->
+            <div class="glass-effect rounded-2xl p-6">
+                <div class="flex items-center justify-between mb-4">
+                    <h3 class="text-lg font-semibold">Session Status</h3>
+                    <i class="fas fa-box text-yellow-400"></i>
+                </div>
+                <div class="space-y-3">
+                    <div class="text-center">
+                        <div class="text-2xl font-bold text-yellow-400 mb-1">
+                            <i class="fas fa-clock"></i>
+                        </div>
+                        <div class="text-sm text-gray-300">Ephemeral Mode</div>
+                        <div class="text-xs text-gray-400 mt-1">00:15:23</div>
+                    </div>
+                    <div class="text-xs text-center text-gray-400">
+                        All data will be destroyed<br>when session ends
+                    </div>
+                    <div class="text-xs text-center text-green-400">
+                        <i class="fas fa-check mr-1"></i>Zero Trace Confirmed
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Network Security -->
+            <div class="glass-effect rounded-2xl p-6">
+                <div class="flex items-center justify-between mb-4">
+                    <h3 class="text-lg font-semibold">Network Shield</h3>
+                    <i class="fas fa-network-wired text-cyan-400"></i>
+                </div>
+                <div class="space-y-2">
+                    <div class="flex items-center justify-between text-sm">
+                        <span class="text-gray-300">DNS Leaks</span>
+                        <span class="text-green-400">Protected</span>
+                    </div>
+                    <div class="flex items-center justify-between text-sm">
+                        <span class="text-gray-300">Traffic Analysis</span>
+                        <span class="text-green-400">Encrypted</span>
+                    </div>
+                    <div class="flex items-center justify-between text-sm">
+                        <span class="text-gray-300">Protocol</span>
+                        <span class="text-green-400">Secure</span>
+                    </div>
+                    <div class="flex items-center justify-between text-sm">
+                        <span class="text-gray-300">Bandwidth</span>
+                        <span class="text-green-400">Optimized</span>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Prompt Injection Protection -->
+            <div class="glass-effect rounded-2xl p-6">
+                <div class="flex items-center justify-between mb-4">
+                    <h3 class="text-lg font-semibold">AI Guard</h3>
+                    <i class="fas fa-shield-virus text-red-400"></i>
+                </div>
+                <div class="text-center">
+                    <div class="text-3xl font-bold text-green-400 mb-2">100%</div>
+                    <div class="text-sm text-gray-300 mb-3">Protection Rate</div>
+                    <div class="w-full bg-gray-700 rounded-full h-2 mb-3">
+                        <div class="bg-green-400 h-2 rounded-full" style="width: 100%"></div>
+                    </div>
+                    <div class="text-xs text-gray-400">Prompt Injection Shield Active</div>
+                    <div class="mt-2 text-xs text-green-400">
+                        <i class="fas fa-check mr-1"></i>All inputs sanitized
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Advanced Security Configuration -->
+        <div class="glass-effect rounded-2xl p-6 mb-6">
+            <h2 class="text-xl font-semibold mb-6">Advanced Security Configuration</h2>
+            
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                <!-- Security Controls -->
+                <div>
+                    <h3 class="text-lg font-medium mb-4 flex items-center">
+                        <i class="fas fa-cogs mr-2 text-blue-400"></i>
+                        Security Controls
+                    </h3>
+                    <div class="space-y-4">
+                        <div class="flex items-center justify-between p-3 bg-gray-800 rounded-lg">
+                            <div>
+                                <div class="font-medium">AI Malware Detection</div>
+                                <div class="text-xs text-gray-400">Real-time scanning with quantized models</div>
+                            </div>
+                            <div class="w-12 h-6 bg-green-600 rounded-full relative cursor-pointer toggle-switch">
+                                <div class="w-5 h-5 bg-white rounded-full absolute right-0.5 top-0.5 transition-all"></div>
+                            </div>
+                        </div>
+                        
+                        <div class="flex items-center justify-between p-3 bg-gray-800 rounded-lg">
+                            <div>
+                                <div class="font-medium">Zero-Trust Isolation</div>
+                                <div class="text-xs text-gray-400">WebContainer-based process isolation</div>
+                            </div>
+                            <div class="w-12 h-6 bg-green-600 rounded-full relative cursor-pointer toggle-switch">
+                                <div class="w-5 h-5 bg-white rounded-full absolute right-0.5 top-0.5 transition-all"></div>
+                            </div>
+                        </div>
+                        
+                        <div class="flex items-center justify-between p-3 bg-gray-800 rounded-lg">
+                            <div>
+                                <div class="font-medium">Prompt Injection Shield</div>
+                                <div class="text-xs text-gray-400">Protect against AI manipulation attacks</div>
+                            </div>
+                            <div class="w-12 h-6 bg-green-600 rounded-full relative cursor-pointer toggle-switch">
+                                <div class="w-5 h-5 bg-white rounded-full absolute right-0.5 top-0.5 transition-all"></div>
+                            </div>
+                        </div>
+                        
+                        <div class="flex items-center justify-between p-3 bg-gray-800 rounded-lg">
+                            <div>
+                                <div class="font-medium">Memory Sanitization</div>
+                                <div class="text-xs text-gray-400">Zero-trace garbage collection</div>
+                            </div>
+                            <div class="w-12 h-6 bg-green-600 rounded-full relative cursor-pointer toggle-switch">
+                                <div class="w-5 h-5 bg-white rounded-full absolute right-0.5 top-0.5 transition-all"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Privacy Protection -->
+                <div>
+                    <h3 class="text-lg font-medium mb-4 flex items-center">
+                        <i class="fas fa-user-shield mr-2 text-purple-400"></i>
+                        Privacy Protection
+                    </h3>
+                    <div class="space-y-4">
+                        <div class="flex items-center justify-between p-3 bg-gray-800 rounded-lg">
+                            <div>
+                                <div class="font-medium">Anti-Fingerprinting</div>
+                                <div class="text-xs text-gray-400">Canvas, WebGL, and audio spoofing</div>
+                            </div>
+                            <div class="w-12 h-6 bg-green-600 rounded-full relative cursor-pointer toggle-switch">
+                                <div class="w-5 h-5 bg-white rounded-full absolute right-0.5 top-0.5 transition-all"></div>
+                            </div>
+                        </div>
+                        
+                        <div class="flex items-center justify-between p-3 bg-gray-800 rounded-lg">
+                            <div>
+                                <div class="font-medium">User Agent Randomization</div>
+                                <div class="text-xs text-gray-400">Dynamic browser identification</div>
+                            </div>
+                            <div class="w-12 h-6 bg-green-600 rounded-full relative cursor-pointer toggle-switch">
+                                <div class="w-5 h-5 bg-white rounded-full absolute right-0.5 top-0.5 transition-all"></div>
+                            </div>
+                        </div>
+                        
+                        <div class="flex items-center justify-between p-3 bg-gray-800 rounded-lg">
+                            <div>
+                                <div class="font-medium">Cookie Isolation</div>
+                                <div class="text-xs text-gray-400">Ephemeral storage per session</div>
+                            </div>
+                            <div class="w-12 h-6 bg-green-600 rounded-full relative cursor-pointer toggle-switch">
+                                <div class="w-5 h-5 bg-white rounded-full absolute right-0.5 top-0.5 transition-all"></div>
+                            </div>
+                        </div>
+                        
+                        <div class="flex items-center justify-between p-3 bg-gray-800 rounded-lg">
+                            <div>
+                                <div class="font-medium">DNS over HTTPS</div>
+                                <div class="text-xs text-gray-400">Encrypted DNS queries</div>
+                            </div>
+                            <div class="w-12 h-6 bg-green-600 rounded-full relative cursor-pointer toggle-switch">
+                                <div class="w-5 h-5 bg-white rounded-full absolute right-0.5 top-0.5 transition-all"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Network Settings -->
+                <div>
+                    <h3 class="text-lg font-medium mb-4 flex items-center">
+                        <i class="fas fa-network-wired mr-2 text-cyan-400"></i>
+                        Network Settings
+                    </h3>
+                    <div class="space-y-4">
+                        <div class="flex items-center justify-between p-3 bg-gray-800 rounded-lg">
+                            <div>
+                                <div class="font-medium">WireGuard VPN</div>
+                                <div class="text-xs text-gray-400">ChaCha20 encryption</div>
+                            </div>
+                            <div class="w-12 h-6 bg-green-600 rounded-full relative cursor-pointer toggle-switch">
+                                <div class="w-5 h-5 bg-white rounded-full absolute right-0.5 top-0.5 transition-all"></div>
+                            </div>
+                        </div>
+                        
+                        <div class="flex items-center justify-between p-3 bg-gray-800 rounded-lg">
+                            <div>
+                                <div class="font-medium">Kill Switch</div>
+                                <div class="text-xs text-gray-400">Auto-disconnect on VPN loss</div>
+                            </div>
+                            <div class="w-12 h-6 bg-green-600 rounded-full relative cursor-pointer toggle-switch">
+                                <div class="w-5 h-5 bg-white rounded-full absolute right-0.5 top-0.5 transition-all"></div>
+                            </div>
+                        </div>
+                        
+                        <div class="flex items-center justify-between p-3 bg-gray-800 rounded-lg">
+                            <div>
+                                <div class="font-medium">IPv6 Protection</div>
+                                <div class="text-xs text-gray-400">Block IPv6 leaks</div>
+                            </div>
+                            <div class="w-12 h-6 bg-green-600 rounded-full relative cursor-pointer toggle-switch">
+                                <div class="w-5 h-5 bg-white rounded-full absolute right-0.5 top-0.5 transition-all"></div>
+                            </div>
+                        </div>
+                        
+                        <div class="flex items-center justify-between p-3 bg-gray-800 rounded-lg">
+                            <div>
+                                <div class="font-medium">Traffic Obfuscation</div>
+                                <div class="text-xs text-gray-400">Disguise VPN traffic</div>
+                            </div>
+                            <div class="w-12 h-6 bg-gray-600 rounded-full relative cursor-pointer toggle-switch">
+                                <div class="w-5 h-5 bg-white rounded-full absolute left-0.5 top-0.5 transition-all"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Real-time Monitoring Dashboard -->
+        <div class="glass-effect rounded-2xl p-6 mb-6">
+            <h2 class="text-xl font-semibold mb-6">Real-time Security Monitoring</h2>
+            
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                <!-- Threat Detection Chart -->
+                <div class="bg-gray-800 rounded-lg p-4">
+                    <h3 class="text-lg font-medium mb-4">Threat Detection Activity</h3>
+                    <canvas id="threatChart" style="height: 200px;"></canvas>
+                </div>
+                
+                <!-- Network Traffic Chart -->
+                <div class="bg-gray-800 rounded-lg p-4">
+                    <h3 class="text-lg font-medium mb-4">Encrypted Traffic Analysis</h3>
+                    <canvas id="trafficChart" style="height: 200px;"></canvas>
+                </div>
+                
+                <!-- Security Score -->
+                <div class="bg-gray-800 rounded-lg p-4">
+                    <h3 class="text-lg font-medium mb-4">Security Score</h3>
+                    <div class="text-center">
+                        <div class="relative w-32 h-32 mx-auto mb-4">
+                            <svg class="w-32 h-32 transform -rotate-90" viewBox="0 0 100 100">
+                                <circle cx="50" cy="50" r="40" stroke="rgba(255,255,255,0.1)" stroke-width="8" fill="none"/>
+                                <circle cx="50" cy="50" r="40" stroke="#22c55e" stroke-width="8" fill="none" 
+                                        stroke-dasharray="251.2" stroke-dashoffset="12.56" class="progress-circle"/>
+                            </svg>
+                            <div class="absolute inset-0 flex items-center justify-center">
+                                <span class="text-2xl font-bold text-green-400">98%</span>
+                            </div>
+                        </div>
+                        <div class="text-sm text-gray-300">Excellent Security Posture</div>
+                        <div class="text-xs text-gray-400 mt-2">
+                            <i class="fas fa-shield-alt mr-1"></i>All pillars operational
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Architecture Overview - Sovereign Pillars -->
+        <div class="glass-effect rounded-2xl p-6">
+            <h2 class="text-xl font-semibold mb-6">Sovereign Architecture Overview</h2>
+            
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <!-- Djed Pillar (Software) -->
+                <div class="pillar-card rounded-xl p-6">
+                    <div class="flex items-center space-x-3 mb-4">
+                        <div class="w-12 h-12 bg-gradient-to-br from-blue-500 to-blue-700 rounded-xl flex items-center justify-center">
+                            <i class="fas fa-building text-2xl text-white"></i>
+                        </div>
+                        <div>
+                            <h3 class="text-lg font-semibold">Djed Pillar</h3>
+                            <p class="text-sm text-gray-400">Software Architecture</p>
+                        </div>
+                    </div>
+                    <ul class="space-y-3 text-sm">
+                        <li class="flex items-center space-x-2">
+                            <i class="fas fa-check text-green-400"></i>
+                            <span>WebContainer Isolation</span>
+                        </li>
+                        <li class="flex items-center space-x-2">
+                            <i class="fas fa-check text-green-400"></i>
+                            <span>Ephemeral Storage</span>
+                        </li>
+                        <li class="flex items-center space-x-2">
+                            <i class="fas fa-check text-green-400"></i>
+                            <span>gVisor Sandboxing</span>
+                        </li>
+                        <li class="flex items-center space-x-2">
+                            <i class="fas fa-check text-green-400"></i>
+                            <span>WireGuard VPN</span>
+                        </li>
+                        <li class="flex items-center space-x-2">
+                            <i class="fas fa-check text-green-400"></i>
+                            <span>Zero Persistence</span>
+                        </li>
+                    </ul>
+                    <div class="mt-4 p-3 bg-blue-500 bg-opacity-20 rounded-lg">
+                        <div class="text-xs text-blue-300">
+                            <i class="fas fa-info-circle mr-1"></i>
+                            Provides immutable infrastructure foundation
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Scarab Pillar (AI/ML) -->
+                <div class="pillar-card rounded-xl p-6">
+                    <div class="flex items-center space-x-3 mb-4">
+                        <div class="w-12 h-12 bg-gradient-to-br from-purple-500 to-purple-700 rounded-xl flex items-center justify-center">
+                            <i class="fas fa-brain text-2xl text-white"></i>
+                        </div>
+                        <div>
+                            <h3 class="text-lg font-semibold">Scarab Pillar</h3>
+                            <p class="text-sm text-gray-400">AI/ML Security</p>
+                        </div>
+                    </div>
+                    <ul class="space-y-3 text-sm">
+                        <li class="flex items-center space-x-2">
+                            <i class="fas fa-check text-green-400"></i>
+                            <span>Quantized AI Models</span>
+                        </li>
+                        <li class="flex items-center space-x-2">
+                            <i class="fas fa-check text-green-400"></i>
+                            <span>Real-time Malware Detection</span>
+                        </li>
+                        <li class="flex items-center space-x-2">
+                            <i class="fas fa-check text-green-400"></i>
+                            <span>Prompt Injection Protection</span>
+                        </li>
+                        <li class="flex items-center space-x-2">
+                            <i class="fas fa-check text-green-400"></i>
+                            <span>Behavioral Analysis</span>
+                        </li>
+                        <li class="flex items-center space-x-2">
+                            <i class="fas fa-check text-green-400"></i>
+                            <span>Federated Learning</span>
+                        </li>
+                    </ul>
+                    <div class="mt-4 p-3 bg-purple-500 bg-opacity-20 rounded-lg">
+                        <div class="text-xs text-purple-300">
+                            <i class="fas fa-info-circle mr-1"></i>
+                            On-device intelligence for sovereign operation
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Ma'at/Ankh Pillar -->
+                <div class="pillar-card rounded-xl p-6">
+                    <div class="flex items-center space-x-3 mb-4">
+                        <div class="w-12 h-12 bg-gradient-to-br from-green-500 to-green-700 rounded-xl flex items-center justify-center">
+                            <i class="fas fa-shield-alt text-2xl text-white"></i>
+                        </div>
+                        <div>
+                            <h3 class="text-lg font-semibold">Ma'at/Ankh Pillar</h3>
+                            <p class="text-sm text-gray-400">Privacy & Ethics</p>
+                        </div>
+                    </div>
+                    <ul class="space-y-3 text-sm">
+                        <li class="flex items-center space-x-2">
+                            <i class="fas fa-check text-green-400"></i>
+                            <span>Anti-Fingerprinting</span>
+                        </li>
+                        <li class="flex items-center space-x-2">
+                            <i class="fas fa-check text-green-400"></i>
+                            <span>Privacy Enforcement</span>
+                        </li>
+                        <li class="flex items-center space-x-2">
+                            <i class="fas fa-check text-green-400"></i>
+                            <span>Zero-Trust Architecture</span>
+                        </li>
+                        <li class="flex items-center space-x-2">
+                            <i class="fas fa-check text-green-400"></i>
+                            <span>Data Minimization</span>
+                        </li>
+                        <li class="flex items-center space-x-2">
+                            <i class="fas fa-check text-green-400"></i>
+                            <span>Consent Management</span>
+                        </li>
+                    </ul>
+                    <div class="mt-4 p-3 bg-green-500 bg-opacity-20 rounded-lg">
+                        <div class="text-xs text-green-300">
+                            <i class="fas fa-info-circle mr-1"></i>
+                            Ensures ethical AI operation and user sovereignty
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Initialize threat detection chart
+        const threatCtx = document.getElementById('threatChart').getContext('2d');
+        const threatChart = new Chart(threatCtx, {
+            type: 'line',
+            data: {
+                labels: ['00:00', '04:00', '08:00', '12:00', '16:00', '20:00', '24:00'],
+                datasets: [{
+                    label: 'Threats Detected',
+                    data: [0, 2, 1, 0, 3, 1, 0],
+                    borderColor: 'rgb(239, 68, 68)',
+                    backgroundColor: 'rgba(239, 68, 68, 0.1)',
+                    tension: 0.4,
+                    fill: true
+                }, {
+                    label: 'Threats Blocked',
+                    data: [0, 2, 1, 0, 3, 1, 0],
+                    borderColor: 'rgb(34, 197, 94)',
+                    backgroundColor: 'rgba(34, 197, 94, 0.1)',
+                    tension: 0.4,
+                    fill: true
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        labels: { color: 'white' }
+                    }
+                },
+                scales: {
+                    x: {
+                        ticks: { color: 'white' },
+                        grid: { color: 'rgba(255, 255, 255, 0.1)' }
+                    },
+                    y: {
+                        ticks: { color: 'white' },
+                        grid: { color: 'rgba(255, 255, 255, 0.1)' }
+                    }
+                }
+            }
+        });
+
+        // Initialize traffic chart
+        const trafficCtx = document.getElementById('trafficChart').getContext('2d');
+        const trafficChart = new Chart(trafficCtx, {
+            type: 'doughnut',
+            data: {
+                labels: ['Encrypted', 'Secure DNS', 'VPN Traffic', 'Blocked'],
+                datasets: [{
+                    data: [85, 10, 4, 1],
+                    backgroundColor: [
+                        'rgb(34, 197, 94)',
+                        'rgb(59, 130, 246)',
+                        'rgb(168, 85, 247)',
+                        'rgb(239, 68, 68)'
+                    ]
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        labels: { color: 'white' }
+                    }
+                }
+            }
+        });
+
+        // Simulate real-time updates
+        setInterval(() => {
+            // Update threat detection data
+            const now = new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
+            threatChart.data.labels.push(now);
+            threatChart.data.labels.shift();
+            
+            threatChart.data.datasets[0].data.push(Math.floor(Math.random() * 5));
+            threatChart.data.datasets[0].data.shift();
+            
+            threatChart.data.datasets[1].data.push(Math.floor(Math.random() * 5));
+            threatChart.data.datasets[1].data.shift();
+            
+            threatChart.update('none');
+            
+            // Update traffic data
+            trafficChart.data.datasets[0].data = [
+                85 + Math.random() * 10,
+                10 + Math.random() * 5,
+                4 + Math.random() * 3,
+                1 + Math.random() * 2
+            ];
+            trafficChart.update('none');
+        }, 5000);
+
+        // Add interactivity to toggle switches
+        document.addEventListener('DOMContentLoaded', function() {
+            const toggles = document.querySelectorAll('.toggle-switch');
+            toggles.forEach(toggle => {
+                toggle.addEventListener('click', function() {
+                    const dot = this.querySelector('div');
+                    if (dot.classList.contains('right-0.5')) {
+                        dot.classList.remove('right-0.5');
+                        dot.classList.add('left-0.5');
+                        this.classList.remove('bg-green-600');
+                        this.classList.add('bg-gray-600');
+                    } else {
+                        dot.classList.remove('left-0.5');
+                        dot.classList.add('right-0.5');
+                        this.classList.remove('bg-gray-600');
+                        this.classList.add('bg-green-600');
+                    }
+                });
+            });
+        });
+
+        // Session timer
+        let sessionTime = 0;
+        setInterval(() => {
+            sessionTime++;
+            const minutes = Math.floor(sessionTime / 60);
+            const seconds = sessionTime % 60;
+            const timeDisplay = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+            const sessionTimer = document.querySelector('.text-xs.text-gray-400.mt-1');
+            if (sessionTimer) {
+                sessionTimer.textContent = timeDisplay;
+            }
+        }, 1000);
+    </script>
+</body>
+</html>

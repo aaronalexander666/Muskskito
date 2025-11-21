@@ -1,0 +1,510 @@
+# Sovereign AI Disposable Browser - Kubernetes Deployment
+# Author: MiniMax Agent
+
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: sovereign-browser
+  labels:
+    name: sovereign-browser
+
+---
+# ConfigMap for application configuration
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: sovereign-config
+  namespace: sovereign-browser
+data:
+  wireguard.conf: |
+    [Interface]
+    PrivateKey = SERVER_PRIVATE_KEY_PLACEHOLDER
+    Address = 10.0.0.1/24
+    ListenPort = 51820
+    SaveConfig = true
+  
+  ai-models.conf: |
+    {
+      "phi3_model_path": "/models/phi-3-quantized.gguf",
+      "llama_model_path": "/models/llama-3.2-1b-quantized.gguf",
+      "detection_threshold": 0.85,
+      "confidence_threshold": 0.9,
+      "max_tokens": 512,
+      "temperature": 0.1,
+      "device": "auto",
+      "quantization": "q4",
+      "max_batch_size": 4,
+      "memory_limit_gb": 4
+    }
+  
+  security-policies.json: |
+    {
+      "network_isolation": {
+        "enabled": true,
+        "allowed_ports": [80, 443, 8080],
+        "blocked_protocols": ["telnet", "ftp", "irc"]
+      },
+      "file_access": {
+        "enabled": true,
+        "allowed_paths": ["/tmp", "/var/tmp"],
+        "blocked_extensions": [".exe", ".bat", ".sh", ".ps1"]
+      },
+      "memory_protection": {
+        "enabled": true,
+        "stack_protection": true,
+        "aslr_enabled": true,
+        "nx_enabled": true
+      },
+      "anti_fingerprinting": {
+        "canvas_spoofing": true,
+        "webgl_randomization": true,
+        "audio_fingerprint_protection": true,
+        "font_randomization": true
+      },
+      "session_management": {
+        "ephemeral_storage": true,
+        "auto_cleanup": true,
+        "cleanup_interval": 300,
+        "secure_deletion": true
+      }
+    }
+
+---
+# SecurityContext for browser containers
+apiVersion: v1
+kind: SecurityContext
+metadata:
+  name: sovereign-browser-security
+  namespace: sovereign-browser
+allowPrivilegeEscalation: false
+runAsNonRoot: true
+runAsUser: 65534
+fsGroup: 65534
+readOnlyRootFilesystem: true
+seccompProfile:
+  type: RuntimeDefault
+capabilities:
+  drop:
+  - ALL
+  add:
+  - NET_ADMIN
+  - SYS_ADMIN
+
+---
+# PersistentVolumeClaim for AI models
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: ai-models-pvc
+  namespace: sovereign-browser
+spec:
+  accessModes:
+  - ReadOnlyMany
+  resources:
+    requests:
+      storage: 10Gi
+  storageClassName: standard
+
+---
+# Main Browser Frontend Deployment
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: sovereign-browser
+  namespace: sovereign-browser
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: sovereign-browser
+  template:
+    metadata:
+      labels:
+        app: sovereign-browser
+    spec:
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 65534
+        fsGroup: 65534
+      containers:
+      - name: browser
+        image: sovereign-browser:latest
+        ports:
+        - containerPort: 8080
+          name: http
+        env:
+        - name: NODE_ENV
+          value: "production"
+        - name: WIREGUARD_CONFIG_PATH
+          value: "/etc/wireguard"
+        - name: AI_MODEL_PATH
+          value: "/models"
+        - name: CONTAINER_SANDBOX_PATH
+          value: "/var/lib/gvisor"
+        resources:
+          requests:
+            memory: "512Mi"
+            cpu: "250m"
+          limits:
+            memory: "1Gi"
+            cpu: "500m"
+        volumeMounts:
+        - name: config-volume
+          mountPath: /etc/sovereign-config
+        - name: wireguard-config
+          mountPath: /etc/wireguard
+          readOnly: true
+        - name: ai-models
+          mountPath: /models
+          readOnly: true
+        securityContext:
+          allowPrivilegeEscalation: false
+          readOnlyRootFilesystem: true
+          capabilities:
+            drop:
+            - ALL
+            add:
+            - NET_ADMIN
+            - SYS_ADMIN
+        livenessProbe:
+          httpGet:
+            path: /health
+            port: 8080
+          initialDelaySeconds: 30
+          periodSeconds: 10
+        readinessProbe:
+          httpGet:
+            path: /ready
+            port: 8080
+          initialDelaySeconds: 5
+          periodSeconds: 5
+      volumes:
+      - name: config-volume
+        configMap:
+          name: sovereign-config
+      - name: wireguard-config
+        configMap:
+          name: wireguard-config
+      - name: ai-models
+        persistentVolumeClaim:
+          claimName: ai-models-pvc
+
+---
+# WireGuard VPN Server Deployment
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: wireguard-server
+  namespace: sovereign-browser
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: wireguard-server
+  template:
+    metadata:
+      labels:
+        app: wireguard-server
+    spec:
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 65534
+        fsGroup: 65534
+      containers:
+      - name: wireguard
+        image: wireguard-server:latest
+        ports:
+        - containerPort: 51820
+          name: wireguard
+          protocol: UDP
+        env:
+        - name: WG_INTERFACE_NAME
+          value: "wg0"
+        - name: WG_LISTEN_PORT
+          value: "51820"
+        resources:
+          requests:
+            memory: "64Mi"
+            cpu: "50m"
+          limits:
+            memory: "128Mi"
+            cpu: "100m"
+        securityContext:
+          allowPrivilegeEscalation: false
+          readOnlyRootFilesystem: true
+          capabilities:
+            drop:
+            - ALL
+        livenessProbe:
+          exec:
+            command:
+            - wg
+            - show
+          initialDelaySeconds: 10
+          periodSeconds: 30
+
+---
+# AI Security Service Deployment
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ai-security-service
+  namespace: sovereign-browser
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: ai-security-service
+  template:
+    metadata:
+      labels:
+        app: ai-security-service
+    spec:
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 65534
+        fsGroup: 65534
+      containers:
+      - name: ai-security
+        image: ai-security-service:latest
+        ports:
+        - containerPort: 8081
+          name: http
+        env:
+        - name: MODEL_PATH
+          value: "/models/phi-3-quantized.gguf"
+        - name: SECURITY_LEVEL
+          value: "high"
+        - name: DETECTION_THRESHOLD
+          value: "0.85"
+        resources:
+          requests:
+            memory: "2Gi"
+            cpu: "1000m"
+          limits:
+            memory: "4Gi"
+            cpu: "2000m"
+          # Uncomment if using GPU nodes
+          # nvidia.com/gpu: 1
+        volumeMounts:
+        - name: ai-models
+          mountPath: /models
+          readOnly: true
+        - name: security-logs
+          mountPath: /var/log/security
+        securityContext:
+          allowPrivilegeEscalation: false
+          readOnlyRootFilesystem: true
+        livenessProbe:
+          httpGet:
+            path: /health
+            port: 8081
+          initialDelaySeconds: 30
+          periodSeconds: 10
+        readinessProbe:
+          httpGet:
+            path: /ready
+            port: 8081
+          initialDelaySeconds: 10
+          periodSeconds: 5
+      volumes:
+      - name: ai-models
+        persistentVolumeClaim:
+          claimName: ai-models-pvc
+      - name: security-logs
+        emptyDir: {}
+
+---
+# gVisor Sandbox Deployment
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: gvisor-sandbox
+  namespace: sovereign-browser
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: gvisor-sandbox
+  template:
+    metadata:
+      labels:
+        app: gvisor-sandbox
+    spec:
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 65534
+        fsGroup: 65534
+      containers:
+      - name: gvisor
+        image: gvisor-sandbox:latest
+        ports:
+        - containerPort: 8082
+          name: http
+        env:
+        - name: GVISOR_SANDBOX_PATH
+          value: "/run/gvisor"
+        - name: MAX_CONTAINERS
+          value: "10"
+        - name: MEMORY_LIMIT
+          value: "2GB"
+        resources:
+          requests:
+            memory: "512Mi"
+            cpu: "250m"
+          limits:
+            memory: "1Gi"
+            cpu: "500m"
+        securityContext:
+          allowPrivilegeEscalation: false
+          readOnlyRootFilesystem: true
+          capabilities:
+            drop:
+            - ALL
+            add:
+            - SYS_ADMIN
+            - SYS_PTRACE
+        volumeMounts:
+        - name: gvisor-state
+          mountPath: /run/gvisor
+        - name: container-runtime
+          mountPath: /var/lib/containers
+        livenessProbe:
+          httpGet:
+            path: /health
+            port: 8082
+          initialDelaySeconds: 15
+          periodSeconds: 10
+        readinessProbe:
+          httpGet:
+            path: /ready
+            port: 8082
+          initialDelaySeconds: 5
+          periodSeconds: 5
+      volumes:
+      - name: gvisor-state
+        emptyDir: {}
+      - name: container-runtime
+        emptyDir: {}
+
+---
+# Service definitions
+apiVersion: v1
+kind: Service
+metadata:
+  name: sovereign-browser-service
+  namespace: sovereign-browser
+spec:
+  type: LoadBalancer
+  ports:
+  - port: 80
+    targetPort: 8080
+    protocol: TCP
+    name: http
+  selector:
+    app: sovereign-browser
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: ai-security-service
+  namespace: sovereign-browser
+spec:
+  clusterIP: None
+  ports:
+  - port: 8081
+    targetPort: 8081
+    protocol: TCP
+    name: http
+  selector:
+    app: ai-security-service
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: gvisor-service
+  namespace: sovereign-browser
+spec:
+  clusterIP: None
+  ports:
+  - port: 8082
+    targetPort: 8082
+    protocol: TCP
+    name: http
+  selector:
+    app: gvisor-sandbox
+
+---
+# NetworkPolicy for network isolation
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: sovereign-browser-network-policy
+  namespace: sovereign-browser
+spec:
+  podSelector:
+    matchLabels:
+      app: sovereign-browser
+  policyTypes:
+  - Ingress
+  - Egress
+  ingress:
+  - from:
+    - namespaceSelector:
+        matchLabels:
+          name: sovereign-browser
+    ports:
+    - protocol: TCP
+      port: 8080
+  egress:
+  - to:
+    - podSelector:
+        matchLabels:
+          app: wireguard-server
+    ports:
+    - protocol: UDP
+      port: 51820
+  - to:
+    - podSelector:
+        matchLabels:
+          app: ai-security-service
+    ports:
+    - protocol: TCP
+      port: 8081
+  - to:
+    - podSelector:
+        matchLabels:
+          app: gvisor-sandbox
+    ports:
+    - protocol: TCP
+      port: 8082
+
+---
+# HorizontalPodAutoscaler for AI Security Service
+apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: ai-security-hpa
+  namespace: sovereign-browser
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: ai-security-service
+  minReplicas: 2
+  maxReplicas: 10
+  metrics:
+  - type: Resource
+    resource:
+      name: cpu
+      target:
+        type: Utilization
+        averageUtilization: 70
+  - type: Resource
+    resource:
+      name: memory
+      target:
+        type: Utilization
+        averageUtilization: 80
