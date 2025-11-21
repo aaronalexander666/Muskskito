@@ -270,7 +270,7 @@ Found a bug? Please open an issue with:
 
 - **Documentation**: [GitHub Wiki](https://github.com/aaronalexander666/muskskito/wiki)
 - **Issues**: [GitHub Issues](https://github.com/aaronalexander666/muskskito/issues)
-- **Email**: support@muskskito.com
+- **Email**: aaronalexanderq4@gmail.com 
 
 ## 🙏 Acknowledgments
 
