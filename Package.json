@@ -1,0 +1,17 @@
+{
+  "name": "dragon-tools",
+  "version": "0.1.0",
+  "description": "Sovereign engineering collective – stability first.",
+  "scripts": {
+    "lint": "html-validate *.html articles/*.html reference/*.html",
+    "serve": "python -m http.server 8000"
+  },
+  "devDependencies": {
+    "html-validate": "^8.7.4"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Dragon-Tools/dragon-tools.git"
+  },
+  "license": "MIT"
+}
