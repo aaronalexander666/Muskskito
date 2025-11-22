@@ -1,0 +1,30 @@
+name: CI
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: Set up Go
+      uses: actions/setup-go@v3
+      with:
+        go-version: 1.24
+
+    - name: Build
+      run: ./scripts/build-repro.sh
+
+    - name: Fuzz
+      run: echo "Fuzzing step not yet implemented"
+
+    - name: Sign
+      run: echo "Signing step not yet implemented"
+
+    - name: Push to OCI registry
+      run: echo "OCI push step not yet implemented"
